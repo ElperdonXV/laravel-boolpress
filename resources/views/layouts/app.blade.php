@@ -67,6 +67,9 @@
                                     </form>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="{{ route('admin.posts.create') }}">Aggiungi un post</a>
+                            </li>
                         @endguest
                     </ul>
                 </div>
