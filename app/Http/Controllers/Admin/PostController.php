@@ -71,9 +71,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+        public function show(Post $post)
     {
-        dd($post);
+        return view('admin.posts.show', ['post' => $post]);
     }
 
     /**
@@ -82,9 +82,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        dd($post);
     }
 
     /**
@@ -105,8 +105,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('admin.posts.index')->with('status', "Post id $post->id deleted");
     }
 }
