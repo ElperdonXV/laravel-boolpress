@@ -16,8 +16,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(18);
-        return view('admin.posts.index', compact('posts'));
+        $posts = Post::orderBy('created_at', 'desc')->paginate(20);
+
+        return view('admin.posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -38,33 +39,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-        ]);
-
         $data = $request->all();
+        $data['user_id'] = Auth::user()->id;
+        $postValidate = $request->validate(
+            [
+                'title' => 'required|max:240',
+                'content' => 'required',
+            ]
+        );
+        $post = new Post();
+        $post->fill($data);
+        $post->slug = $post->createSlug($data['title']);
+        $post->save();
 
-        $slug = Str::slug($data['title'], '-');
-        $postPresente = Post::where('slug', $slug)->first();
-
-
-        $counter = 0;
-        while ($postPresente) {
-            $slug = $slug . '-' . $counter;
-            $postPresente = Post::where('slug', $slug)->first();
-            $counter++;
-        }
-
-        $newPost = new Post();
-
-        $newPost->fill($data);
-        $newPost->slug = $slug;
-        $newPost->save();
-
-        return redirect()->route('admin.posts.show', ['post' => $newPost]);
+        return redirect()->route('admin.posts.show', $post->slug);
     }
-
     /**
      * Display the specified resource.
      *

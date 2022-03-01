@@ -33,7 +33,7 @@
                             <td>{{ $post->content }}</td>
                             <td>{{ $post->slug }}</td>
                             <td>
-                                <a class="btn btn-outline-light" href="{{ route('admin.posts.show', $post) }}">View</a>
+                                <a class="btn btn-outline-light" href="{{ route('admin.posts.show', $post->slug) }}">View</a>
                             </td>
                             <td>
                                 <a class="btn btn-outline-light" href="{{ route('admin.posts.edit', $post->slug) }}">Edit</a>
