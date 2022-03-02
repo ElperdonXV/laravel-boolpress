@@ -36,14 +36,18 @@
                                 <a class="btn btn-outline-light" href="{{ route('admin.posts.show', $post->slug) }}">View</a>
                             </td>
                             <td>
+                                @if (Auth::user()->id === $post->user_id)
                                 <a class="btn btn-outline-light" href="{{ route('admin.posts.edit', $post->slug) }}">Edit</a>
+                                @endif
                             </td>
                             <td>
+                                @if (Auth::user()->id === $post->user_id)
                                 <form class="d-inline-block" action="{{ route('admin.posts.destroy', $post) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <input class="btn btn-danger" type="submit" value="Delete">
                                 </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
