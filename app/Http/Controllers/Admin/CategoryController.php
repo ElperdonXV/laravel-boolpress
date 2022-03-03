@@ -46,12 +46,25 @@ class CategoryController extends Controller
         return view('admin.categories.show', ['category' => $category]);
     }
 
-    public function edit($id){
-
+    public function edit(Category $category){
+        return view('admin.categories.edit', ['category'=> $category]);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, Category $category){
+        $data = $request->all();
+        $categoryValidate = $request->validate(
+            [
+                'name' => 'required|max:240',
+            ]
+        );
 
+        if ($data['name'] != $category->name) {
+            $category->name = $data['name'];
+            $category->slug = $category->createSlug($data['name']);
+        }
+
+        $category->update();
+        return redirect()->route('admin.categories.show', $category);
     }
 
     public function destroy(Category $category)

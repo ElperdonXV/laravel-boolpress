@@ -39,8 +39,9 @@
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->created_at }}</td>
                             <td>{{ $category->updated_at }}</td>
-                            <td><a class="btn btn-primary"
-                                    href="{{ route('admin.categories.show', $category->slug) }}">View</a>
+                            <td>
+                                <a class="btn btn-primary" href="{{ route('admin.categories.show', $category->slug) }}">View</a>
+                                <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category->slug) }}">>Edit</a>
                             </td>
                             <td>
                                 <form action="{{ route('admin.categories.destroy', $category->slug) }}" method="post">
