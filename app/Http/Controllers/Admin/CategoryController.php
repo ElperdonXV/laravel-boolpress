@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Model\Post;
 use App\Model\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,5 +23,11 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         return view('admin.categories.show', ['category' => $category]);
+    }
+
+    public function destroy(Category $category)
+    {
+        $category->delete();
+        return redirect()->route('admin.categories.index');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Post;
-
 use App\Http\Controllers\Controller;
 use App\Model\Category;
 use Illuminate\Http\Request;

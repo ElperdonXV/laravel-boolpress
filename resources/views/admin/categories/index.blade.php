@@ -37,6 +37,13 @@
                             <td><a class="btn btn-primary"
                                     href="{{ route('admin.categories.show', $category->slug) }}">View</a>
                             </td>
+                            <td>
+                                <form action="{{ route('admin.categories.destroy', $category->slug) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input class="btn btn-danger" type="submit" value="Delete">
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
 
