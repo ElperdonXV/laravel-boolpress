@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Model;
-
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
@@ -23,6 +23,21 @@ class Category extends Model
         return 'slug';
     }
 
+       public function createSlug($title)
+    {
+        $slug = Str::slug($title, '-');
+
+        $oldcategory = Category::where('slug', $slug)->first();
+
+        $counter = 0;
+        while ($oldcategory) {
+            $newSlug = $slug . '-' . $counter;
+            $oldcategory = Category::where('slug', $newSlug)->first();
+            $counter++;
+        }
+
+        return (empty($newSlug)) ? $slug : $newSlug;
+    }
 
     /**
      * Relationship with posts 

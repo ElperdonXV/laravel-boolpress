@@ -17,6 +17,11 @@
             </div>
         </div>
         <div class="row">
+            <div class="col mb-2">
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-dark mb-2">Add new category</a>
+            </div>
+        </div>
+        <div class="row">
             <table class="table table-striped">
                 <thead>
                     <tr>
