@@ -23,6 +23,7 @@
                             <th>Title</th>
                             <th>Content</th>
                             <th>Slug</th>
+                            <th>Tags</th>
                             <th colspan="3">Actions</th>
                         </tr>
                     </thead>
@@ -32,6 +33,11 @@
                             <td>{{ $post->title }}</td>
                             <td>{{ $post->content }}</td>
                             <td>{{ $post->slug }}</td>
+                            <td>
+                                @foreach($post->tags()->get() as $tag)
+                                #{{ $tag->name }}
+                                @endforeach
+                            </td>
                             <td>
                                 <a class="btn btn-outline-light" href="{{ route('admin.posts.show', $post->slug) }}">View</a>
                             </td>
