@@ -65,6 +65,14 @@
                         </div>
                     @enderror
                 </div>
+
+                <!--Upload-->
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Default file input example</label>
+                    <input class="form-control" type="file" id="image" name="image">
+                </div>
+
                 <div class="mb-3">
                     <label for="content" class="form-label">Content</label>
                     <textarea class="form-control" id="content" rows="3" name="content"> {{ old('content') }}</textarea>
@@ -74,11 +82,6 @@
                         </div>
                     @enderror
                 </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image</label>
-                    <input class="form-control" type="image" id="image" name="image">
-                </div>
-
                 {{-- <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}"> --}}
 
                 <input class="btn btn-primary" type="submit" value="Save">

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Post;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Model\Category;
 use App\Model\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth; 
 
 class PostController extends Controller
 {
@@ -68,11 +70,12 @@ class PostController extends Controller
                 'title' => 'required|max:240',
                 'content' => 'required',
                 'category_id' => 'exists:App\Model\Category,id',
-                'tags.*' => 'nullable|exists:App\Model\Tag,id'
+                'tags.*' => 'nullable|exists:App\Model\Tag,id',
+                'image'=> 'required|image',
             ]
         );
 
-
+        $img_path = Storage::put('uploads', $data['image']);
         $post = new Post();
         $post->fill($data);
         $post->slug = $post->createSlug($data['title']);
