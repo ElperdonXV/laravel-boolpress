@@ -11,17 +11,20 @@
         </div>
         <div class="row">
             <div class="col">
-                <h1>
-                    {{ $post->title }}
-                </h1>
+                
             </div>
         </div>
         <div class="row">
             <div class="col">
-                {{ $post->content }}
+                <img class="img-fluid" src="{{ asset('storage/' . $post->image) }}" alt="">
             </div>
             <div class="col">
-                <img src="{{ asset('storage/' . $post->image) }}" alt="">
+                <h1>
+                    {{ $post->title }}
+                </h1>
+                <p>
+                    {{ $post->content }}
+                </p>
             </div>
         </div>
     </div>

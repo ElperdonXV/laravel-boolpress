@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Post;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Controller;
 use App\Model\Category;
 use App\Model\Tag;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     /**
@@ -21,15 +20,9 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->paginate(20);
-
         return view('admin.posts.index', ['posts' => $posts]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function indexUser()
     {
         $posts = Post::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(20);
@@ -44,10 +37,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //passiamo le categorie alla pagina create
         $categories = Category::all();
         $tags = Tag::all();
-        return view('admin.posts.create', ['categories' => $categories], ['tags'=> $tags]);
+        return view('admin.posts.create', ['categories' => $categories, 'tags' => $tags]);
     }
 
     /**
@@ -58,33 +50,34 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['user_id'] = Auth::user()->id;
-        // dd(Category::findOrFail($data['category_id']));
-        // dd(Category::where('id', $data['category_id'])->first());
-        // if (Auth::user()->id != $data['user_id']) {
-        //     abort('404');
-        // }
-        $postValidate = $request->validate(
-            [
-                'title' => 'required|max:240',
-                'content' => 'required',
-                'category_id' => 'exists:App\Model\Category,id',
-                'tags.*' => 'nullable|exists:App\Model\Tag,id',
-                'image'=> 'nullable|image',
-            ]
-        );
+        $validateData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'category_id' => 'exists:App\Model\Category,id',
+            'tags.*' => 'nullable|exists:App\Model\Tag,id',
+            'image' => 'nullable|image',
+        ]);
 
-        $img_path = Storage::put('uploads', $data['image']);
-        $data['image'] = $img_path;
-        $post = new Post();
-        $post->fill($data);
-        $post->slug = $post->createSlug($data['title']);
-        $post->save();
-        if (!empty($data['tags'])) {
-            $post->tags()->attach($data['tags']);
+        $data = $request->all();
+
+        $data['user_id'] = Auth::user()->id;
+
+        if (!empty($data['image'])) {
+            $img_path = Storage::put('uploads', $data['image']);
+            $data['image'] = $img_path;
         }
-        return redirect()->route('admin.posts.show', $post->slug);
+
+        $newPost = new Post();
+
+        $newPost->fill($data);
+        $newPost->slug = $newPost->createSlug($data['title']);
+        $newPost->save();
+
+        if (!empty($data['tags'])) {
+            $newPost->tags()->attach($data['tags']);
+        }
+
+        return redirect()->route('admin.posts.show', $newPost->slug);
     }
 
     /**
@@ -95,7 +88,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('admin.posts.show', ['post' => $post]);
+        $data = [
+            'post' => $post,
+            'title' => $post->title,
+        ];
+        return view('admin.posts.show', $data);
     }
 
     /**
@@ -111,7 +108,8 @@ class PostController extends Controller
         }
         $categories = Category::all();
         $tags = Tag::all();
-        return view('admin.posts.edit', ['post' => $post, 'categories' => $categories], ['tags'=> $tags]);
+
+        return view('admin.posts.edit', ['post' => $post, 'categories' => $categories, 'tags' => $tags]);
     }
 
     /**
@@ -128,15 +126,22 @@ class PostController extends Controller
             abort('403');
         }
 
-
-        $postValidate = $request->validate(
+        $validateData = $request->validate(
             [
                 'title' => 'required|max:240',
                 'content' => 'required',
                 'category_id' => 'exists:App\Model\Category,id',
-                'tags.*' => 'nullable|exists:App\Model\Tag,id'
+                'tags.*' => 'nullable|exists:App\Model\Tag,id',
+                'image' => 'nullable|image'
             ]
         );
+
+        if (!empty($data['image'])) {
+            Storage::delete($post->image);
+
+            $img_path = Storage::put('uploads', $data['image']);
+            $post->image = $img_path;
+        }
 
         if ($data['title'] != $post->title) {
             $post->title = $data['title'];
@@ -149,12 +154,16 @@ class PostController extends Controller
             $post->category_id = $data['category_id'];
         }
 
+
+
         $post->update();
+
         if (!empty($data['tags'])) {
             $post->tags()->sync($data['tags']);
         } else {
             $post->tags()->detach();
         }
+
         return redirect()->route('admin.posts.show', $post);
     }
 
@@ -169,8 +178,10 @@ class PostController extends Controller
         if (Auth::user()->id != $post->user_id) {
             abort('403');
         }
+
         $post->tags()->detach();
         $post->delete();
+
         return redirect()->route('admin.posts.index')->with('status', "Post id $post->id deleted");
     }
 }
