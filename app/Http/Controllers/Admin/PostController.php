@@ -71,17 +71,18 @@ class PostController extends Controller
                 'content' => 'required',
                 'category_id' => 'exists:App\Model\Category,id',
                 'tags.*' => 'nullable|exists:App\Model\Tag,id',
-                'image'=> 'required|image',
+                'image'=> 'nullable|image',
             ]
         );
 
         $img_path = Storage::put('uploads', $data['image']);
+        $data['image'] = $img_path;
         $post = new Post();
         $post->fill($data);
         $post->slug = $post->createSlug($data['title']);
         $post->save();
         if (!empty($data['tags'])) {
-            $newPost->tags()->attach($data['tags']);
+            $post->tags()->attach($data['tags']);
         }
         return redirect()->route('admin.posts.show', $post->slug);
     }

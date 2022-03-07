@@ -69,7 +69,7 @@
                 <!--Upload-->
 
                 <div class="mb-3">
-                    <label for="image" class="form-label">Default file input example</label>
+                    <label for="image" class="form-label">Image</label>
                     <input class="form-control" type="file" id="image" name="image">
                 </div>
 
