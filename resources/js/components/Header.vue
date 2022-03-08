@@ -1,13 +1,12 @@
 <template>
-  
+    <div>Ciao sono l'header</div>
 </template>
 
 <script>
-export default {
-
-}
+    export default {
+        name: "Header",
+    }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
 </style>

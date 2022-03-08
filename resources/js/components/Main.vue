@@ -1,13 +1,12 @@
 <template>
-  
+    <div>Ciao sono il main</div>
 </template>
 
 <script>
-export default {
-
-}
+    export default {
+        name: "Main",
+    }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
 </style>
