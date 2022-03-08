@@ -29,3 +29,6 @@ Route::middleware('auth')
         Route::get('/myposts', 'PostController@indexUser')->name('posts.indexUser');
         Route::resource('posts', 'PostController');
     });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
