@@ -8,11 +8,13 @@ use App\Model\Post;
 
 class PostController extends Controller
 {
-    public function index(){
-        $posts = Post::all();
+    public function index()
+    {
+        $posts = Post::paginate(12);
+
         return response()->json([
-            'response'=> true,
-            'results'=> ['posts' => $posts]
+            'response' => true,
+            'results' => $posts,
         ]);
     }
 }
