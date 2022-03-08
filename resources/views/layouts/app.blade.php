@@ -15,13 +15,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!--Script-->
+    @yield('script')
 </head>
 
 <body>
-    <div id="app">
-        {{-- header --}}
+    {{-- header --}}
         @include('partials.header')
-
+    <div id="app">
         {{-- main --}}
         <main class="py-4">
             <div class="container-fluid">
@@ -70,5 +72,4 @@
         </main>
     </div>
 </body>
-
 </html>
