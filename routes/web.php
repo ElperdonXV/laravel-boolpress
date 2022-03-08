@@ -31,4 +31,8 @@ Route::middleware('auth')
     });
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('{any?}', function ($name = null) {
+    return view('admin.home');
+})->where('any', '.*');
