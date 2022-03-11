@@ -11,7 +11,7 @@ class ContactController extends Controller
         $path = $request->file->store('uploads');
         return response()->json([
             "success"=> true,
-            "result"=> $request->all()
+            "result"=> $path
         ]);
     }
 }
