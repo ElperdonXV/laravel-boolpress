@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class ContactController extends Controller
 {
     public function sendMessage(Request $request){
+        $path = $request->file->store('uploads');
         return response()->json([
             "success"=> true,
             "result"=> $request->all()
