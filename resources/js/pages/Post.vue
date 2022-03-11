@@ -28,7 +28,7 @@ import Axios from "axios";
     },
     methods: {
       getPost(url){
-          Axios.get(url).then(
+          Axios.get(url, {headers: {'Authorization': 'Bearer n686yd9qnm9b56h'} }).then(
             (result) => {
               console.log(result);
               this.post = result.data.results.data;
