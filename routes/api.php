@@ -24,3 +24,4 @@ Route::get('v1/posts/random', 'Api\PostController@inRandomOrder');
 Route::get('v1/posts/search', 'Api\PostController@search');
 Route::get('v1/posts/{id}', 'Api\PostController@show')->middleware('api.auth');
 Route::get('v1/tags', 'Api\TagController@index');
+Route::get('v1/contacts', 'Api\ContactController@sendMessage')->middleware('api.auth');

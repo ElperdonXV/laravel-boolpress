@@ -41,8 +41,8 @@
                     routeName: 'posts'
                 },
                 {
-                    label: 'Chi Siamo',
-                    routeName: 'about'
+                    label: 'Contact',
+                    routeName: 'contacts'
                 }
             ]
       }
